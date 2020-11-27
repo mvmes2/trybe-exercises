@@ -21,197 +21,158 @@ R$ 142,00 parcela a se deduzir do imposto.
 Fazendo a conta, temos: (7,5% de R$ 2.670,00) - R$ 142,80 = R$ 57,45
 O último cálculo para conseguir o salário líquido é R$ 2.670,00 - R$ 57,45 (salário-base - valor IR) = R$ 2.612,55.
 Resultado: R$ 2.612,55.
-Dica: que tal identificar as alíquotas com variáveis de nomes explicativos?*/
-
-//notas do Aluno: Aqui pesquisei no goole um jeito para formatar as virgulas e valores referente a moeda do pais e encontrei uma função que mostrarei abaixo:
-//Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL', maximumSignificantDigits: 2 }).format(nomeDaVariavelQueContemOValorASerFormatado);
-//aqui esta função está formatando o valor de saida para moeda real "BRL" e limitando a casa decimal em 2. "Intl.NumberFormat -> Construtor para objetos que permitem formatação de número sensível a linguagem."
-// ou também podemos usar o "toLocaleString" - > nomeDaVariavelQueContemOValorASerFormatado.toLocaleString('pt-BR', { maximumSignificantDigits: 2 });
-// vai formatar apenas 2 casas apos a virgula para o padrão brasileiro, e ".toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})" -> vai formatar a virgula e inserir a moeda real BRL ao valor. 
-// lembrando que estas funções nos retornam o numero em formato de string, então teste e cuidado a usar são imprecindíveis principalmente quando se trata de valores que representam dinheiro. para este exercício basta utilizarmos o ".toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });" que ele já irá limitar em 2 após a vírgula pois este é o padrão brasileiro.
-
-
-//exercício:
-//1- Faça um programa que, dado um salário bruto, calcule o líquido a ser recebido.
-//2- INSS
-// Salário bruto até R$ 1.556,94: alíquota de 8%
-// Salário bruto de R$ 1.556,95 a R$ 2.594,92: alíquota de 9%
-// Salário bruto de R$ 2.594,93 a R$ 5.189,82: alíquota de 11%
-// Salário bruto acima de R$ 5.189,82: alíquota máxima de R$ 570,88
-// 3- 
-// IR
-// Até R$ 1.903,98: isento de imposto de renda
-// De R$ 1.903,99 a 2.826,65: alíquota de 7,5% e parcela de R$ 142,80 a deduzir do imposto
-// De R$ 2.826,66 a R$ 3.751,05: alíquota de 15% e parcela de R$ 354,80 a deduzir do imposto
-// De R$ 3.751,06 a R$ 4.664,68: alíquota de 22,5% e parcela de R$ 636,13 a deduzir do imposto
-// Acima de R$ 4.664,68: alíquota de 27,5% e parcela de R$ 869,36 a deduzir do imposto.
-
-
-
-let salarioBruto = 3500; // insira o valor do seu salario bruto no formaro "9999.99" e rode o programa para calcular seus impostos. <<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Dica: que tal identificar as alíquotas com variáveis de nomes explicativos?
+//===================================================================================================================================================
+notas do Aluno: Aqui pesquisei no goole um jeito para formatar as virgulas e valores referente a moeda do pais e encontrei uma função que mostrarei abaixo:
+"toLocaleString" ---> "nomeDaVariavelComValorParaFormatar.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'})" -> vai formatar a virgula e inserir a moeda real BRL ao valor. 
+ lembrando que esta função nos retorna o numero em formato de string, então testes e cuidado a usar são imprescindíveis principalmente quando se trata de valores que representam dinheiro. e vale ressaltar que pela conversão do número para String, você não conseguira usar o valor da variável após formatada para fazer operações novamente, a não ser que converta novamente para número, ou salve o valor da váriavel em uma variável"backup" antes de formatar, e se precisar usar o valor dela novamente, use o da "backup" não formatada.*/
+//=====================================================================================================================================================
 
 
 
 
-//programa:
-if(salarioBruto < 1556.95){ //Pagando apenas o valor do INSS
-    let aliquotaINSSCalc = (8/100);
-    let aliquotaINSS = salarioBruto*aliquotaINSSCalc;
-    let valorFinal = (salarioBruto-aliquotaINSS);
-    let valor = valorFinal;
-    //Formatação dos valores.
-    valor = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+let salarioBruto = 6800;// insira o valor do seu salario bruto no formaro "9999.99" e rode o programa para calcular seus impostos. <<
+
+
+
+
+//Programa:
+if(salarioBruto < 1556.94){
+    let calcInss = (8/100);
+    let calcAliquotaInss = (salarioBruto*calcInss);
+    let aliquotaInss = (calcInss*100);    
+    let salarioBase = (salarioBruto-calcAliquotaInss);     
+    //formatando
+    aliquotaInss = aliquotaInss.toLocaleString('pt-BR');     
+    salarioBase = salarioBase.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
     salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    aliquotaINSS = aliquotaINSS.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    //Mostrando o resultado:
-    console.log('Você ganha um salário bruto de:', salarioBruto, ', paga uma alíquota de 8% apra o Inss = '+aliquotaINSS+'/mês');    
-    console.log('Seu salário Líquido no fim do mês descontando o inss é:',valor,'Você não Paga IR. "sortudo!"');
-}else if(salarioBruto > 1556.94 & salarioBruto < 1903.98){ // pagando inss e IR
-    let aliquotaINSSCalc = (9/100); // % da aliquota inss
-    let aliquotaINSS = (salarioBruto*aliquotaINSSCalc);// valor aliquota inss   
-    let inssValor = (aliquotaINSSCalc*100); //Demonstra valor da aliquota IR em numero real.  
-    let salarioMenosInss = (salarioBruto-aliquotaINSS); 
-    //foratando resultados:
-    salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    aliquotaINSS = aliquotaINSS.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });  
-    salarioMenosInss = salarioMenosInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    //mostrando resultados:
-    console.log('Seu Salário mensal é de:', salarioBruto, ',Você paga uma alíquota de:',inssValor,'% para o Inss');
-    console.log('É retirado do seu salário:',aliquotaINSS+'/mês para o INSS');
-    console.log('Seu Salário Líquido mensal deduzindo inss fica em:',salarioMenosInss,'Você não paga IR.');
+    calcAliquotaInss = calcAliquotaInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    //mostrando:
+    console.log('Seu salário de',salarioBruto+' , cai na alíquota do Inss de',aliquotaInss+'% = ',calcAliquotaInss+'/Mês.');
+    console.log('Seu salário líquido após pagar o Inss é de: '+salarioBase);
+    console.log('Você deu "Sorte!!" e não Paga IR ainda, então vai cair na sua conta os '+salarioBase,'no fim do mês.');
 }
-    else if(salarioBruto > 1903.98 & salarioBruto < 2594.93){
-        let aliquotaINSSCalc = (9/100); // % da aliquota inss
-        let aliquotaINSS = (salarioBruto*aliquotaINSSCalc);// valor aliquota inss   
-        let inssValor = (aliquotaINSSCalc*100); //Demonstra valor da aliquota IR em numero real.  
-        let salarioMenosInss = (salarioBruto-aliquotaINSS); 
-        let aliquotaIRCalc = (7.5/100); // % da aliquota IR
-        let aliquotaIR = (salarioBruto*aliquotaIRCalc);// valor aliquota IR   
-        let irValor = (aliquotaIRCalc*100); //Demonstra valor da aliquota IR em numero real. 
-        let salarioMenosIr = (salarioBruto-aliquotaIR);
-        let salarioFinalLiquido = (salarioBruto-aliquotaINSS-aliquotaIR);
-        let impostoFinal = (aliquotaINSS+aliquotaIR);
-        //formatando:
-        salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        aliquotaINSS = aliquotaINSS.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });  
-        salarioMenosInss = salarioMenosInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioMenosIr = salarioMenosIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        aliquotaIR = aliquotaIR.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioFinalLiquido = salarioFinalLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        impostoFinal = impostoFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });       
-        //mostrando:
-        console.log('Seu Salário Bruto é de:', salarioBruto, ',Você paga uma alíquota de:',irValor+'% para o IR = '+aliquotaIR+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo IR fica em:',salarioMenosIr);    
-        console.log('Você paga uma alíquota de:',inssValor+'% para o Inss = '+aliquotaINSS+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo inss fica em:',salarioMenosInss)
-        console.log('De '+salarioBruto,'você recebe apenas:',salarioFinalLiquido,'após pagar',impostoFinal,'de impostos, "INNS + IR".');         
+else if(salarioBruto > 1556.94 & salarioBruto < 2594.92){
+    let calcInss = (9/100);
+    let calcAliquotaInss = (salarioBruto*calcInss);
+    let aliquotaInss = (calcInss*100);    
+    let salarioBase = (salarioBruto-calcAliquotaInss);
+    let salarioBase2 = salarioBase;
+    let impostoInss = calcAliquotaInss; 
+    //formatando
+    aliquotaInss = aliquotaInss.toLocaleString('pt-BR');     
+    salarioBase = salarioBase.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    calcAliquotaInss = calcAliquotaInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    //mostrando:
+    console.log('Seu salário de',salarioBruto+' , cai na alíquota do Inss de',aliquotaInss+'% = ',calcAliquotaInss+'/Mês.');
+    console.log('Seu salário líquido após pagar o Inss é de: '+salarioBase);
+    if(salarioBase2 > 1903.98 & salarioBase2 < 2826.65)
+    {
+        let calcIr = (7.5/100);
+        let aliquotaIr = (calcIr*100);
+        let calcAliquotaIr = ((salarioBase2*calcIr)-142.80);        
+        let salarioLiquido = (salarioBase2-calcAliquotaIr);
+        let impostoTotal =  (calcAliquotaIr+impostoInss);        
+        //formatando
+        aliquotaIr = aliquotaIr.toLocaleString('pt-BR');       
+        salarioLiquido = salarioLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        calcAliquotaIr = calcAliquotaIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        impostoTotal = impostoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        //mostrando
+        console.log('Seu salario Base após pagar o Inss, pega uma alíquota de Ir de',aliquotaIr+'%, com valor de',calcAliquotaIr+'/Mês. com uma dedução de R$142,80 já calculada');
+        console.log('Você vai receber Líquido no fim do mês:',salarioLiquido,', Pagou um total de', impostoTotal,'em impostos.');            
     }
-    else if(salarioBruto > 2594.92 & salarioBruto < 3751.05){
-        let aliquotaINSSCalc = (11/100); // % da aliquota inss
-        let aliquotaINSS = (salarioBruto*aliquotaINSSCalc);// valor aliquota inss   
-        let inssValor = (aliquotaINSSCalc*100); //Demonstra valor da aliquota IR em numero real.  
-        let salarioMenosInss = (salarioBruto-aliquotaINSS); 
-        let aliquotaIRCalc = (15/100); // % da aliquota IR
-        let aliquotaIR = (salarioBruto*aliquotaIRCalc);// valor aliquota IR  
-        let irValor = (aliquotaIRCalc*100); //Demonstra valor da aliquota IR em numero real. 
-        let salarioMenosIr = (salarioBruto-aliquotaIR);
-        let salarioFinalLiquido = (salarioBruto-aliquotaINSS-aliquotaIR);
-        let impostoFinal = (aliquotaINSS+aliquotaIR);
-        //formatando:
-        salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        aliquotaINSS = aliquotaINSS.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });  
-        salarioMenosInss = salarioMenosInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioMenosIr = salarioMenosIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        aliquotaIR = aliquotaIR.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioFinalLiquido = salarioFinalLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        impostoFinal = impostoFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });           
-        //mostrando:
-        console.log('Seu Salário Bruto é de:', salarioBruto, ',Você paga uma alíquota de:',irValor+'% para o IR = '+aliquotaIR+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo IR fica em:',salarioMenosIr);    
-        console.log('Você paga uma alíquota de:',inssValor+'% para o Inss = '+aliquotaINSS+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo inss fica em:',salarioMenosInss)
-        console.log('De '+salarioBruto,'você recebe apenas:',salarioFinalLiquido,'após pagar',impostoFinal,'de impostos, "INNS + IR".');         
+}
+else if(salarioBruto > 2594.93 & salarioBruto < 5189.82){
+    let calcInss = (11/100);
+    let calcAliquotaInss = (salarioBruto*calcInss);
+    let aliquotaInss = (calcInss*100);    
+    let salarioBase = (salarioBruto-calcAliquotaInss);
+    let salarioBase2 = salarioBase;
+    let impostoInss = calcAliquotaInss; 
+    //formatando
+    aliquotaInss = aliquotaInss.toLocaleString('pt-BR');     
+    salarioBase = salarioBase.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    calcAliquotaInss = calcAliquotaInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    //mostrando:
+    console.log('Seu salário de',salarioBruto+' , cai na alíquota do Inss de',aliquotaInss+'% = ',calcAliquotaInss+'/Mês.');
+    console.log('Seu salário líquido após pagar o Inss é de: '+salarioBase);
+    if(salarioBase2 > 1903.98 & salarioBase2 < 2826.65)
+    {
+        let calcIr = (7.5/100);
+        let aliquotaIr = (calcIr*100);
+        let calcAliquotaIr = ((salarioBase2*calcIr)-142.80);        
+        let salarioLiquido = (salarioBase2-calcAliquotaIr);
+        let impostoTotal =  (calcAliquotaIr+impostoInss);        
+        //formatando
+        aliquotaIr = aliquotaIr.toLocaleString('pt-BR');       
+        salarioLiquido = salarioLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        calcAliquotaIr = calcAliquotaIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        impostoTotal = impostoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        //mostrando
+        console.log('Seu salario Base após pagar o Inss, pega uma alíquota de Ir de',aliquotaIr+'%, com valor de',calcAliquotaIr+'/Mês. com uma dedução de R$142,80 já calculada');
+        console.log('Você vai receber Líquido no fim do mês:',salarioLiquido,', Pagou um total de', impostoTotal,'em impostos.');                  
     }
-    else if(salarioBruto > 3751.05 & salarioBruto < 4664.68){
-        let aliquotaINSSCalc = (11/100); // % da aliquota inss
-        let aliquotaINSS = (salarioBruto*aliquotaINSSCalc);// valor aliquota inss   
-        let inssValor = (aliquotaINSSCalc*100); //Demonstra valor da aliquota IR em numero real.  
-        let salarioMenosInss = (salarioBruto-aliquotaINSS); 
-        let aliquotaIRCalc = (22.5/100); // % da aliquota IR
-        let aliquotaIR = (salarioBruto*aliquotaIRCalc);// valor aliquota IR  
-        let irValor = (aliquotaIRCalc*100); //Demonstra valor da aliquota IR em numero real. 
-        let salarioMenosIr = (salarioBruto-aliquotaIR);
-        let salarioFinalLiquido = (salarioBruto-aliquotaINSS-aliquotaIR);
-        let impostoFinal = (aliquotaINSS+aliquotaIR);
-        //formatando:
-        salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        aliquotaINSS = aliquotaINSS.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });  
-        salarioMenosInss = salarioMenosInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioMenosIr = salarioMenosIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        aliquotaIR = aliquotaIR.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioFinalLiquido = salarioFinalLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        impostoFinal = impostoFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });   
-        irValor = irValor.toLocaleString('pt-BR');         
-        //mostrando:
-        console.log('Seu Salário Bruto é de:', salarioBruto, ',Você paga uma alíquota de:',irValor+'% para o IR = '+aliquotaIR+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo IR fica em:',salarioMenosIr);    
-        console.log('Você paga uma alíquota de:',inssValor+'% para o Inss = '+aliquotaINSS+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo inss fica em:',salarioMenosInss)
-        console.log('De '+salarioBruto,'você recebe apenas:',salarioFinalLiquido,'após pagar',impostoFinal,'de impostos, "INNS + IR".'); 
+    if(salarioBase2 > 2826.65 & salarioBase2 < 3751.05)
+    {
+        let calcIr = (15/100);
+        let aliquotaIr = (calcIr*100);
+        let calcAliquotaIr = ((salarioBase2*calcIr)-354.80);        
+        let salarioLiquido = (salarioBase2-calcAliquotaIr);
+        let impostoTotal =  (calcAliquotaIr+impostoInss);        
+        //formatando
+        aliquotaIr = aliquotaIr.toLocaleString('pt-BR');       
+        salarioLiquido = salarioLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        calcAliquotaIr = calcAliquotaIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        impostoTotal = impostoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        //mostrando
+        console.log('Seu salario Base após pagar o Inss, pega uma alíquota de Ir de',aliquotaIr+'%, com valor de',calcAliquotaIr+'/Mês. com uma dedução de R$354,80 já calculada');
+        console.log('Você vai receber Líquido no fim do mês:',salarioLiquido,', Pagou um total de', impostoTotal,'em impostos.');            
     }
-    else if(salarioBruto > 4664.68 & salarioBruto < 5189.82){
-        let aliquotaINSSCalc = (11/100); // % da aliquota inss
-        let aliquotaINSS = (salarioBruto*aliquotaINSSCalc);// valor aliquota inss   
-        let inssValor = (aliquotaINSSCalc*100); //Demonstra valor da aliquota IR em numero real.  
-        let salarioMenosInss = (salarioBruto-aliquotaINSS); 
-        let aliquotaIRCalc = (27.5/100); // % da aliquota IR
-        let aliquotaIR = (salarioBruto*aliquotaIRCalc);// valor aliquota IR  
-        let irValor = (aliquotaIRCalc*100); //Demonstra valor da aliquota IR em numero real. 
-        let salarioMenosIr = (salarioBruto-aliquotaIR);
-        let salarioFinalLiquido = (salarioBruto-aliquotaINSS-aliquotaIR);
-        let impostoFinal = (aliquotaINSS+aliquotaIR);
-        //formatando:
-        irValor = irValor.toLocaleString('pt-BR'); 
-        salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        aliquotaINSS = aliquotaINSS.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });  
-        salarioMenosInss = salarioMenosInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioMenosIr = salarioMenosIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        aliquotaIR = aliquotaIR.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioFinalLiquido = salarioFinalLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        impostoFinal = impostoFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });   
-        irValor = irValor.toLocaleString('pt-BR');        
-        //mostrando:
-        console.log('Seu Salário Bruto é de:', salarioBruto, ',Você paga uma alíquota de:',irValor+'% para o IR = '+aliquotaIR+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo IR fica em:',salarioMenosIr);    
-        console.log('Você paga uma alíquota de:',inssValor+'% para o Inss = '+aliquotaINSS+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo inss fica em:',salarioMenosInss)
-        console.log('De '+salarioBruto,'você recebe apenas:',salarioFinalLiquido,'após pagar',impostoFinal,'de impostos, "INNS + IR".'); 
+    if(salarioBase2 > 3751.05 & salarioBase2 < 4664.68)
+    {
+        let calcIr = (22.5/100);
+        let aliquotaIr = (calcIr*100);
+        let calcAliquotaIr = ((salarioBase2*calcIr)-316.13);        
+        let salarioLiquido = (salarioBase2-calcAliquotaIr);
+        let impostoTotal =  (calcAliquotaIr+impostoInss);        
+        //formatando
+        aliquotaIr = aliquotaIr.toLocaleString('pt-BR');       
+        salarioLiquido = salarioLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        calcAliquotaIr = calcAliquotaIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        impostoTotal = impostoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        //mostrando
+        console.log('Seu salario Base após pagar o Inss, pega uma alíquota de Ir de',aliquotaIr+'%, com valor de',calcAliquotaIr+'/Mês. com uma dedução de R$613,13 já calculada');
+        console.log('Você vai receber Líquido no fim do mês:',salarioLiquido,', Pagou um total de', impostoTotal,'em impostos.');           
     }
-    else if(salarioBruto > 5189.82){
-        let aliquotaINSSCalc = (11/100); // % da aliquota inss
-        let aliquotaINSS = (salarioBruto*aliquotaINSSCalc);// valor aliquota inss   
-        let inssValor = (aliquotaINSSCalc*100); //Demonstra valor da aliquota IR em numero real.  
-        let salarioMenosInss = (salarioBruto-570.88); 
-        let aliquotaIRCalc = (27.5/100); // % da aliquota IR
-        let aliquotaIR = (salarioBruto*aliquotaIRCalc);// valor aliquota IR  
-        let irValor = (aliquotaIRCalc*100); //Demonstra valor da aliquota IR em numero real. 
-        let salarioMenosIr = (salarioBruto-aliquotaIR);
-        let salarioFinalLiquido = (salarioBruto-aliquotaINSS-aliquotaIR);
-        let impostoFinal = (570.88+aliquotaIR);
-        //formatando:
-        irValor = irValor.toLocaleString('pt-BR'); 
-        salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        aliquotaINSS = aliquotaINSS.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });  
-        salarioMenosInss = salarioMenosInss.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioMenosIr = salarioMenosIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        aliquotaIR = aliquotaIR.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        salarioFinalLiquido = salarioFinalLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); 
-        impostoFinal = impostoFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });   
-        irValor = irValor.toLocaleString('pt-BR');        
-        //mostrando:
-        console.log('Seu Salário Bruto é de:', salarioBruto, ',Você paga uma alíquota de:',irValor+'% para o IR = '+aliquotaIR+'/mês');
-        console.log('Seu Salário Líquido mensal deduzindo IR fica em:',salarioMenosIr);    
-        console.log('Você paga a alíquota Máxima para o Inss de R$ 570,88/mês');
-        console.log('Seu Salário Líquido mensal deduzindo inss fica em:',salarioMenosInss)
-        console.log('De '+salarioBruto,'você recebe apenas:',salarioFinalLiquido,'após pagar',impostoFinal,'de impostos, "INNS + IR".'); 
+}
+else if(salarioBruto > 5189.82){        
+    let salarioBase = (salarioBruto-570.88);
+    let salarioBase2 = salarioBase;
+    let impostoInss = 570.88; 
+    //formatando         
+    salarioBase = salarioBase.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    salarioBruto = salarioBruto.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });    
+    //mostrando:
+    console.log('Seu salário de',salarioBruto+' , cai na alíquota Máxima do Inss que tem o valor de R$ 570,80/Mês Fixo.');
+    console.log('Seu salário líquido após pagar o Inss é de: '+salarioBase);
+    if(salarioBase2 > 4664.68)
+    {
+        let calcIr = (27.5/100);
+        let aliquotaIr = (calcIr*100);
+        let calcAliquotaIr = ((salarioBase2*calcIr)-869.36);        
+        let salarioLiquido = (salarioBase2-calcAliquotaIr);
+        let impostoTotal =  (calcAliquotaIr+impostoInss);        
+        //formatando
+        aliquotaIr = aliquotaIr.toLocaleString('pt-BR');       
+        salarioLiquido = salarioLiquido.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        calcAliquotaIr = calcAliquotaIr.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        impostoTotal = impostoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        //mostrando
+        console.log('Seu salario Base após pagar o Inss, pega uma alíquota de Ir de',aliquotaIr+'%, com valor de',calcAliquotaIr+'/Mês. com uma dedução de R$869,36 já calculada');
+        console.log('Você vai receber Líquido no fim do mês:',salarioLiquido,', Pagou um total de', impostoTotal,'em impostos.');      
     }
+}
