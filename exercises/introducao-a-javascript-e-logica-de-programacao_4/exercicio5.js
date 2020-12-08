@@ -23,6 +23,14 @@ let info = {
     nota: "O último MacPatinhas",
     recorrente: 'sim'
      }
+
+     for(let property in info){
+      console.log(info[property],'e',info2[property]);
+      
+      }
+      if(info['recorrente'] === info2['recorrente']){
+        console.log('Ambos recorrente.');
+     }
   
-      console.log(info,info2);
+      
   
