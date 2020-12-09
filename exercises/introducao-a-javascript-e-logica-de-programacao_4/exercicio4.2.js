@@ -6,10 +6,10 @@ Valor esperado no retorno da função: Fernanda .
 function checkNameChar(nameArray){
         let name = nameArray[0];       
     for(let pos in nameArray){ 
-        if(nameArray[pos].length < name.length){
+        if(nameArray[pos].length > name.length){
             name = nameArray[pos];           
         }
     }
-    console.log(name)    
+    return console.log(name);    
 };
 checkNameChar(['José', 'Lucas', 'Nádia', 'Fernanda', 'Cairo', 'Joana']);
